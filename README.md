@@ -26,7 +26,7 @@ The data from each of the three plexes were put onto a common, matched intensity
 
 ## Statistical analyses
 
-Generating high quality data for biological exploration is the real focus of the PAW pipeline. Demonstrating the utility of the data the PAW pipeline produces requires some statistical analysis. Jupyter notebooks using an R kernel were used to explore the efficacy of data normalization concepts and summarize the underlying data quality. The final results tables from the PAW pipeline bear strong resemblance to count tables from next gen sequencing. They are, therefore, compatible with widely used genomic statistical packages such as edgeR.
+Generating high quality data for biological exploration is the real focus of the PAW pipeline. Demonstrating the utility of the data the PAW pipeline produces requires some statistical analysis. Jupyter notebooks using an R kernel were used to explore the data normalization concepts and summarize the underlying data quality. The final results tables from the PAW pipeline bear strong resemblance to count tables from next gen sequencing. They are, therefore, compatible with widely used genomic statistical packages such as edgeR.
 
 The 27 samples had 6 normal tissue samples, 6 non-metaplastic triple negative breast cancer tissue samples, and 15 metaplastic breast cancer tissue samples. The metaplastic samples were classified into several subtypes. There were three major subtypes: chondroid, spindle, and squamous. One of the chondroid samples was actually a normal tissue sample. Two notebooks were constructed to look at two questions: (1) how do the major tissue types (normal, triple negative, and metaplastic) differ? and (2) how do the metaplastic subtypes differ? The `PXD014414_comparisons_major.ipynb` or `PXD014414_comparisons_subtypes.ipynb` notebook files can be selected to display the notebooks at GitHub.
 
@@ -42,7 +42,7 @@ The PAW pipeline uses wider parent ion tolerances in Comet (typically 1.25 Da) f
 
 ![deltamass 2+](images/mass_2.png)
 
-These are the deltamass histograms for the 2+ peptide top hits. The top panel shows the wide tolerance search full range (+/- 1.25 Da). Matches to the forward protein sequences are in blue. Matches to the sequence-reversed decoys are in red. We have (as expected) a major peak at 0.0 Da. We also have very small peaks at 0.984 Da (deamidation) and 1.003 Da (an isotopic peak mis-trigger). The lower two panels are expanded scale plots of these two regions. The dotted lines define adjustable windows to capture the peak(s) in each region. The windows will be called the 0-Da (left) And 1-Da (right) regions.
+These are the delta-mass histograms for the 2+ peptide top hits. The top panel shows the wide tolerance search full range (+/- 1.25 Da). Matches to the forward protein sequences are in blue. Matches to the sequence-reversed decoys are in red. We have (as expected) a major peak at 0.0 Da. We also have very small peaks at 0.984 Da (deamidation) and 1.003 Da (an isotopic peak mis-trigger). The lower two panels are expanded scale plots of these two regions. The dotted lines define adjustable windows to capture the peak(s) in each region. The windows will be called the 0-Da (left) and 1-Da (right) regions.
 
 The incorrect scores (in red) are uniformly distributed across the +/- 1.25 Da delta-mass space, as are the incorrect matches to the target sequences (there are also flat distributions in the blue histograms). We will also make score histograms for the delta-mass values that were not inside either the 0-Da region or the 1-Da region. The instruments may not be able to measure an accurate mass for all of the very low abundance peptides.
 
@@ -50,19 +50,19 @@ The incorrect scores (in red) are uniformly distributed across the +/- 1.25 Da d
 
 ![deltamass 3+](images/mass_3.png)
 
-These are the deltamass histograms for the 3+ peptide top hits. The 0-Da peak is slightly wider and about half as tall as the 2+ peptides. The peaks in the 1-Da region are relatively larger. 3+ peptide tend to be longer so they are more likely to contain an asparagine residue (the source of the deamidations). 3+ peptide will also tend to be heavier with a less prominent monoisotopic peak, so mis-triggering on the first isotopic peak is more likely.
+These are the delta-mass histograms for the 3+ peptide top hits. The 0-Da peak is slightly wider and about half as tall as the 2+ peptides. The peaks in the 1-Da region are relatively larger. 3+ peptide tend to be longer so they are more likely to contain an asparagine residue (the source of the deamidations). 3+ peptide will also tend to be heavier with a less prominent monoisotopic peak, so mis-triggering on the first isotopic peak is more likely.
 
 ---
 
 ![deltamass 4+](images/mass_4.png)
 
-These are the deltamass histograms for the 4+ peptide top hits. We have far fewer 4+ peptides with trypsin compared to 2+ and 3+ peptides. The 0-Da peak gets wider with increasing charge state, and the relative chance of mis-triggers gets greater.
+These are the delta-mass histograms for the 4+ peptide top hits. We have far fewer 4+ peptides with trypsin compared to 2+ and 3+ peptides. The 0-Da peak gets wider with increasing charge state, and the relative chance of mis-triggers gets greater.
 
 ---
 
 ### Conditional score histograms are checked next:
 
-The PAW pipeline takes a divide and conquer approach to controlling PSM FDR. We have three charge states (2+, 3+, and 4+) in three delta-mass regions (0-Da, 1-Da, and outside windows) for 9 sets of conditional score histograms. Matches are further divided into unmodified peptides and each modification grouped by mass shift. We only specified oxidized methionine in the Comet searches, so we have one +16 mass shift. There are some samples where semi-trpytic peptides are common. Semi-trpytic searches are supported by separating matches by number of tryptic termini (NTT). We required fully-tryptic specificity, so all of the NTT=1 histograms will be empty.
+The PAW pipeline takes a divide and conquer approach to controlling PSM FDR. We have three charge states (2+, 3+, and 4+) in three delta-mass regions (0-Da, 1-Da, and outside windows) for 9 sets of conditional score histograms. Matches are further divided into unmodified peptides and each modification grouped by mass shift. We only specified oxidized methionine in the Comet searches, so we have one +16 mass shift. There are some samples (serum, saliva, etc.) where semi-trpytic peptides are common. Semi-trpytic searches are supported by separating matches by number of tryptic termini (NTT). We required fully-tryptic specificity, so all of the NTT=1 histograms will be empty.
 
 ![scores 0-Da 2+ nomods](images/score_0_2_nomod.png)
 ![scores 0-Da 2+ oxidation](images/score_0_2_ox.png)
@@ -103,7 +103,7 @@ Last, but not least, are the matches that did not have defined delta masses (out
 
 There were 266,723 scans that passed the filtering thresholds. The publication reported 251,305 "peptides" (probably PSMs). The PAW processing had about 6% more identified PSMs. Further comparisons break down due to different protein inference choices. The PAW protein numbers were 5,330 after basic parsimony steps at 2 peptides/protein/plex. The publication reported 5,798 proteins, but likely included single peptide per protein identifications.
 
-The publication's TMT integrator processing yielded 5,635 quantifiable proteins; however, there was considerable missing data that required imputation with their approach. The IRS method restricted to quantifiable proteins to those seen in each plex and that was 4,132 proteins for the PAW analysis. Those proteins (81% of the total number) account for 99.55% of the total intensities. Those 4,132 proteins only have 0.2% missing values. The 955 proteins not seen in all plexes (0.45% of the total intensity) have 98% of all the missing data points.
+The publication's TMT integrator processing yielded 5,635 quantifiable proteins; however, there was considerable missing data that required imputation with their approach. The IRS method restricts the quantifiable proteins to those seen in each plex, and that was 4,132 proteins for the PAW analysis. Those proteins (81% of the total number) account for 99.55% of the total intensities. Those 4,132 proteins only have 0.2% missing values. The 955 proteins not seen in all plexes (0.45% of the total intensity) have 98% of all the missing data points.
 
 ---
 
