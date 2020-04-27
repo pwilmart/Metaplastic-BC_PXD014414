@@ -1,8 +1,40 @@
 # Metaplastic-BC_PXD014414
-Re-analysis of metaplastic breast cancer 27-sample TMT data from PXD014414
 
+Re-analysis of metaplastic breast cancer 27-sample TMT data from [PXD014414](https://www.ebi.ac.uk/pride/archive/projects/PXD014414).
+
+The data is from [this publication](https://www.nature.com/articles/s41467-020-15283-z):
+
+Djomehri, S.I., Gonzalez, M.E., da Veiga Leprevost, F., Tekula, S.R., Chang, H.Y., White, M.J., Cimino-Mathews, A., Burman, B., Basrur, V., Argani, P. and Nesvizhskii, A.I., 2020. Quantitative proteomic landscape of metaplastic breast carcinoma pathological subtypes and their relationship to triple-negative tumors. Nature communications, 11(1), pp.1-15.
+
+## Data overview and summary of published analysis
+
+From the Project description at [PXD014414](https://www.ebi.ac.uk/pride/archive/projects/PXD014414):
+
+> Metaplastic breast carcinoma (MBC) is the most aggressive form of triple-negative cancer (TNBC), defined by the presence of “metaplastic” components of spindle, squamous, or sarcomatoid histology. The protein profiles underpinning the pathological subtypes and metastatic behavior of MBC are unknown. Using multiplex quantitative tandem mass tag-based proteomics we quantified 5,798 proteins in MBC, TNBC, and normal breast from 27 patients.
+
+This is a re-analysis of the human tissue samples from the above publication where 27 samples were labeled with 10-plex TMT reagents and the data acquired on a Thermo Fusion Tribrid instrument using the newer SPS MS3 methodology. The samples were distributed across three plexes linked by a single pooled reference channel. Each set of biological samples (each plex) was separated into 8 high pH reverse phase fractions to enable deep proteome expression profiling.
+
+The publication used the philosopher software suite developed in Alexey Nesvizhskii's lab at the University of Michigan (https://github.com/Nesvilab/philosopher) for the TMT expression analysis. Some of the analysis details are as follows: a larger human protein database from UniProt (with contams and decoys); [MSFragger](https://www.nature.com/articles/nmeth.4256) search engine, 20 ppm parent ion mass tolerance; TMT tags, cys alkylation, met oxidation modifications (some static, some dynamic); and trypsin with up to 2 missed cleavages. PSMs were filtered to 1% FDR using philosopher, proteins inferred with basic parsimony, and proteins filtered to 1% FDR. Reporter ion signals for "usable" peptides were aggregated into protein level measures. A ratio-based analysis was performed where each biological sample's proteins were expressed as ratios to the pooled reference channel.
+
+## Re-analysis overview
+
+The RAW files were downloaded from [PXD014414](https://www.ebi.ac.uk/pride/archive/projects/PXD014414) and processed with the [PAW pipeline](https://github.com/pwilmart/PAW_pipeline). The RAW files were converted into MS2 format files and reporter ions extracted using MSConvert and Python scripts. Comet was used for PSM assignments. Search parameter highlights were: a canonical UniProt reference protein database (with contams and decoys), tryptic cleavage with up to 2 missed cleavages, 1.25 Da monoisotopic parent ion mass tolerance, 1.0005 Da monoisotopic fragment ion mass tolerance, static cys alkylation and TMT tags, and variable met oxidation.
+
+Accurate mass conditional discriminant score histograms and the target/decoy method were used to control PSM FDR at 1%. Basic and extended parsimony analysis was used to infer proteins. Protein FDR was controlled using the two-peptide rule. Individual reporter ion peak heights (intensities) were aggregated into total protein intensities for each biological replicate.
+
+The data from each of the three plexes were put onto a common, matched intensity scale using the pooled reference channels and the internal reference scaling (IRS) method. The IRS method naturally excludes the very low abundance proteins that account for almost all of the missing data. This approach does not need any fancy methods for handling missing data, per se. The final data is still in its natural intensity space and avoids all of the limitations of ratio-based methods. This has the benefit of providing a realistic relative protein abundance ranking dimension. This can be helpful for data interpretation.
+
+## Statistical analyses
+
+Generating high quality data for biological exploration is the real focus of the PAW pipeline. Demonstrating the utility of the data the PAW pipeline produces requires some statistical analysis. Jupyter notebooks using an R kernel were used to explore the efficacy of data normalization concepts and summarize the underlying data quality. The final results tables from the PAW pipeline bear strong resemblance to count tables from next gen sequencing. They are, therefore, compatible with widely used genomic statistical packages such as edgeR.
+
+The 27 samples had 6 normal tissue samples, 6 non-metaplastic triple negative breast cancer tissue samples, and 15 metaplastic breast cancer tissue samples. The metaplastic samples were classified into several subtypes. There were three major subtypes: chondroid, spindle, and squamous. One of the chondroid samples was actually a normal tissue sample. Two notebooks were constructed to look at two questions: (1) how do the major tissue types (normal, triple negative, and metaplastic) differ? and (2) how do the metaplastic subtypes differ? The `PXD014414_comparisons_major.ipynb` or `PXD014414_comparisons_subtypes.ipynb` notebook files can be selected to display the notebooks at GitHub.
 
 ---
+
+## PAW pipeline filtering overview
+
+There were 754,130 total MS2 scans acquired from the 24 RAW files. The mass and score cutoffs used to achieve the 1% PSM FDR are illustrated below.
 
 ### Delta-mass histograms are considered first:
 
@@ -68,3 +100,12 @@ We have relatively few correct target matches for peptides in the 1-Da regions. 
 Last, but not least, are the matches that did not have defined delta masses (outside of the 0-Da or the 1-Da windows). It was not obvious in the delta-mass histograms above that there was any excess of target matches compared to decoy matches outside of the 0-Da or 1-Da regions. However, we see that there are clearly high-scoring target matches that can be recovered. The sensitivity to recover these peptides is not great, but every little bit helps. Only the 3+ peptides are shown for the "outside" matches. The 2+ and 4+ peptides are similar.
 
 ---
+
+There were 266,723 scans that passed the filtering thresholds. The publication reported 251,305 "peptides" (probably PSMs). The PAW processing had about 6% more identified PSMs. Further comparisons break down due to different protein inference choices. The PAW protein numbers were 5,330 after basic parsimony steps at 2 peptides/protein/plex. The publication reported 5,798 proteins, but likely included single peptide per protein identifications.
+
+The publication's TMT integrator processing yielded 5,635 quantifiable proteins; however, there was considerable missing data that required imputation with their approach. The IRS method restricted to quantifiable proteins to those seen in each plex and that was 4,132 proteins for the PAW analysis. Those proteins (81% of the total number) account for 99.55% of the total intensities. Those 4,132 proteins only have 0.2% missing values. The 955 proteins not seen in all plexes (0.45% of the total intensity) have 98% of all the missing data points.
+
+---
+
+Phil Wilmarth, OHSU
+April 27, 2020
