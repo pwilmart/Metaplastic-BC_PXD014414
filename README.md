@@ -18,11 +18,11 @@ The publication used the philosopher software suite developed in Alexey Nesvizhs
 
 ## Re-analysis overview
 
-The RAW files were downloaded from [PXD014414](https://www.ebi.ac.uk/pride/archive/projects/PXD014414) and processed with the [PAW pipeline](https://github.com/pwilmart/PAW_pipeline). The RAW files were converted into MS2 format files and reporter ions extracted using MSConvert and Python scripts. Comet was used for PSM assignments. Search parameter highlights were: a canonical UniProt reference protein database (with contams and decoys), tryptic cleavage with up to 2 missed cleavages, 1.25 Da monoisotopic parent ion mass tolerance, 1.0005 Da monoisotopic fragment ion mass tolerance, static cys alkylation and TMT tags, and variable met oxidation.
+The RAW files were downloaded from [PXD014414](https://www.ebi.ac.uk/pride/archive/projects/PXD014414) and processed with the [PAW pipeline](https://github.com/pwilmart/PAW_pipeline). The RAW files were converted into MS2 format files and reporter ions extracted using [MSConvert](http://proteowizard.sourceforge.net/) and Python scripts. [Comet](http://comet-ms.sourceforge.net/) was used for PSM assignments. Search parameter highlights were: a canonical UniProt reference protein database (with contams and decoys), tryptic cleavage with up to 2 missed cleavages, 1.25 Da monoisotopic parent ion mass tolerance, 1.0005 Da monoisotopic fragment ion mass tolerance, static cys alkylation and TMT tags, and variable met oxidation.
 
 Accurate mass conditional discriminant score histograms and the target/decoy method were used to control PSM FDR at 1%. Basic and extended parsimony analysis was used to infer proteins. Protein FDR was controlled using the two-peptide rule. Individual reporter ion peak heights (intensities) were aggregated into total protein intensities for each biological replicate.
 
-The data from each of the three plexes were put onto a common, matched intensity scale using the pooled reference channels and the internal reference scaling (IRS) method. The IRS method naturally excludes the very low abundance proteins that account for almost all of the missing data. This approach does not need any fancy methods for handling missing data, per se. The final data is still in its natural intensity space and avoids all of the limitations of ratio-based methods. This has the benefit of providing a realistic relative protein abundance ranking dimension. This can be helpful for data interpretation.
+The data from each of the three plexes were put onto a common, matched intensity scale using the pooled reference channels and the [internal reference scaling](https://pwilmart.github.io/TMT_analysis_examples/IRS_validation.html) (IRS) method. The IRS method naturally excludes the very low abundance proteins that account for almost all of the missing data. This approach does not need any fancy methods for handling missing data, per se. The final data is still in its natural intensity space and avoids all of the limitations of ratio-based methods. This has the benefit of providing a realistic relative protein abundance ranking dimension. This can be helpful for data interpretation.
 
 ## Statistical analyses
 
@@ -104,6 +104,44 @@ Last, but not least, are the matches that did not have defined delta masses (out
 There were 266,723 scans that passed the filtering thresholds. The publication reported 251,305 "peptides" (probably PSMs). The PAW processing had about 6% more identified PSMs. Further comparisons break down due to different protein inference choices. The PAW protein numbers were 5,330 after basic parsimony steps at 2 peptides/protein/plex. The publication reported 5,798 proteins, but likely included single peptide per protein identifications.
 
 The publication's TMT integrator processing yielded 5,635 quantifiable proteins; however, there was considerable missing data that required imputation with their approach. The IRS method restricts the quantifiable proteins to those seen in each plex, and that was 4,132 proteins for the PAW analysis. Those proteins (81% of the total number) account for 99.55% of the total intensities. Those 4,132 proteins only have 0.2% missing values. The 955 proteins not seen in all plexes (0.45% of the total intensity) have 98% of all the missing data points.
+
+---
+
+### File roadmap
+
+- A_peptide_results_9.txt: Detailed PSM-level report for plex A
+- add_TMT_intensities_log.txt: Log file from adding reporter ion intensities to results files
+- analysis_stats.xlsx: Some PAW pipeline statsitics
+- B_peptide_results_9.txt: Detailed PSM-level report for plex B
+- C_peptide_results_9.txt: Detailed PSM-level report for plex C
+- comet.params: comet parameters file
+- file_list.txt: This file
+- GOTerms_report.txt: Frequency summary of GO terms
+- grouped_peptide_summary_9.txt: Peptide summary after extended parsimony grouping
+- grouped_peptide_summary_TMT_9.txt: Peptide summary after extended parsimony grouping with reporter ion intensities
+- grouped_protein_summary_9.txt: Protein summary after extended parsimony grouping
+- grouped_protein_summary_TMT_9.txt: Protein summary after extended parsimony grouping with reporter ion intensities
+- keyword_report.txt: Frequency summary of UniProt keyword terms
+- labeled_grouped_protein_summary_TMT_9.txt: Protein summary after extended parsimony grouping with sample keys and additional contaminant flagging
+- labeled_grouped_protein_summary_TMT_9_IRS_normalized.txt: Final IRS normalized protein table
+- pathway_report.txt: Frequency summary of Reactome Pathway terms
+- PAW_IRS_log.txt: Log file from the IRS normalization step
+- PAW_protein_grouper.log: Log file from the exgtended parsimony grouping step
+- PAW_results.log: Log file from the basic protein inference step
+- PAW_table_descriptions_9.txt: Summary of the files and tables from the PAW pipeline
+- peptide_summary_9.txt: Initial peptide summary
+- protein_summary_9.txt: Initial protein summary table (this table is redundant - each protein in each group gets a row)
+- PXD014414_comparisons_major.html: Notebook for comparisons of normal to triple negative to metaplastic samples in HTML format
+- PXD014414_comparisons_major.ipynb: Notebook for comparisons of normal to triple negative to metaplastic samples (iPython notebook with an R kernel)
+- PXD014414_comparisons_major.r: The R code cells from the notebook for comparisons of normal to triple negative to metaplastic samples
+- PXD014414_comparisons_subtypes.html: Notebook for comparisons of metaplastic subtypes in HTML format
+- PXD014414_comparisons_subtypes.ipynb: Notebook for comparisons of metaplastic subtypes (iPython notebook with an R kernel)
+- PXD014414_comparisons_subtypes.r: The R code cells from the notebook for comparisons of metaplastic subtypes
+- PXD014414_labeled_grouped_protein_summary_TMT_9_IRS_normalized.xlsx: Main IRS summary table in Excel with some formatting
+- PXD014414_MBC_three_subclasses_results.txt: Output from the notebook comparing metaplastic subtypes
+- PXD014414_MBC_three_subclasses_results.xlsx: Output from the notebook comparing metaplastic subtypes in Excel with formatting (DE candidates)
+- PXD014414_three_tissues_results.txt: Output from the notebook comparing major tissue types
+- PXD014414_three_tissues_results.xlsx: Output from the notebook comparing major tissue types in Excel with formatting (DE candidates)
 
 ---
 
