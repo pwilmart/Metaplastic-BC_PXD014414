@@ -1,8 +1,10 @@
 # Metaplastic-BC_PXD014414
 
-Re-analysis of metaplastic breast cancer 27-sample TMT data from [PXD014414](https://www.ebi.ac.uk/pride/archive/projects/PXD014414).
+### Re-analysis of metaplastic breast cancer 27-sample TMT data from [PXD014414](https://www.ebi.ac.uk/pride/archive/projects/PXD014414).
 
-The data is from [this publication](https://www.nature.com/articles/s41467-020-15283-z):
+#### Re-analysis by Phil Wilmarth <br /> OHSU PSR core <br /> April 27, 2020
+
+##### The data is from [this publication](https://www.nature.com/articles/s41467-020-15283-z):
 
 Djomehri, S.I., Gonzalez, M.E., da Veiga Leprevost, F., Tekula, S.R., Chang, H.Y., White, M.J., Cimino-Mathews, A., Burman, B., Basrur, V., Argani, P. and Nesvizhskii, A.I., 2020. Quantitative proteomic landscape of metaplastic breast carcinoma pathological subtypes and their relationship to triple-negative tumors. Nature communications, 11(1), pp.1-15.
 
@@ -22,13 +24,13 @@ The RAW files were downloaded from [PXD014414](https://www.ebi.ac.uk/pride/archi
 
 Accurate mass conditional discriminant score histograms and the target/decoy method were used to control PSM FDR at 1%. Basic and extended parsimony analysis was used to infer proteins. Protein FDR was controlled using the two-peptide rule. Individual reporter ion peak heights (intensities) were aggregated into total protein intensities for each biological replicate.
 
-The data from each of the three plexes were put onto a common, matched intensity scale using the pooled reference channels and the [internal reference scaling](https://pwilmart.github.io/TMT_analysis_examples/IRS_validation.html) (IRS) method. The IRS method naturally excludes the very low abundance proteins that account for almost all of the missing data. This approach does not need any fancy methods for handling missing data, per se. The final data is still in its natural intensity space and avoids all of the limitations of ratio-based methods. This has the benefit of providing a realistic relative protein abundance ranking dimension. This can be helpful for data interpretation.
+The data from each of the three plexes were put onto a common, matched intensity scale using the pooled reference channels and the [internal reference scaling](https://pwilmart.github.io/TMT_analysis_examples/IRS_validation.html) (IRS) method. The IRS method naturally excludes the very low abundance proteins that account for almost all of the missing data. This approach does not need any special methods for handling missing data, *per se*. The final data is retained in its natural intensity space and avoids all the limitations of ratio-based methods. This has the benefit of providing a realistic relative protein abundance ranking dimension (the summed intensity). This can be helpful for data interpretation.
 
 ## Statistical analyses
 
-Generating high quality data for biological exploration is the real focus of the PAW pipeline. Demonstrating the utility of the data the PAW pipeline produces requires some statistical analysis. Jupyter notebooks using an R kernel were used to explore the data normalization concepts and summarize the underlying data quality. The final results tables from the PAW pipeline bear strong resemblance to count tables from next gen sequencing. They are, therefore, compatible with widely used genomic statistical packages such as edgeR.
+Generating high quality **starting data** for biological exploration is the real focus of the PAW pipeline. Demonstrating the utility of the data the PAW pipeline produces; however, requires some statistical analysis. [Jupyter notebooks](www.jupyter.org) using an R kernel were used to explore the data normalization concepts and summarize the underlying data quality. The final results tables from the PAW pipeline bear strong resemblance to count tables from next gen sequencing. They are, therefore, compatible with widely used genomic statistical packages such as [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html).
 
-The 27 samples had 6 normal tissue samples, 6 non-metaplastic triple negative breast cancer tissue samples, and 15 metaplastic breast cancer tissue samples. The metaplastic samples were classified into several subtypes. There were three major subtypes: chondroid, spindle, and squamous. One of the chondroid samples was actually a normal tissue sample. Two notebooks were constructed to look at two questions: (1) how do the major tissue types (normal, triple negative, and metaplastic) differ? and (2) how do the metaplastic subtypes differ? The `PXD014414_comparisons_major.ipynb` or `PXD014414_comparisons_subtypes.ipynb` notebook files can be selected to display the notebooks at GitHub.
+The 27 samples had 6 normal tissue samples, 6 non-metaplastic triple negative breast cancer tissue samples, and 15 metaplastic breast cancer tissue samples. The metaplastic samples were classified into several subtypes. There were three major subtypes: chondroid, spindle, and squamous. One of the chondroid samples was actually a normal tissue sample and was reassigned. Two Jupyter notebooks were constructed to look at two questions: (1) how do the major tissue types (normal, triple negative, and metaplastic) differ? and (2) how do the metaplastic subtypes differ? The `PXD014414_comparisons_major.ipynb` or `PXD014414_comparisons_subtypes.ipynb` notebook files can be selected to display the notebooks at directly at GitHub. The notebooks are also saved as HTML files in case the repository is downloaded as a Zip file.
 
 ---
 
@@ -38,7 +40,7 @@ There were 754,130 total MS2 scans acquired from the 24 RAW files. The mass and 
 
 ### Delta-mass histograms are considered first:
 
-The PAW pipeline uses wider parent ion tolerances in Comet (typically 1.25 Da) for two reasons: (1) accurate mass does not distinguish correct and incorrect matches unless incorrect masses are allowed to have inaccurate masses, and (2) Comet scores are converted to PeptideProphet-like discriminant scores. The second reason needs a reliable DeltaCN score, which requires a large number of theoretical peptides be scored in the search. That is guaranteed in a wider tolerance search.
+The PAW pipeline uses wider parent ion tolerances in Comet (typically 1.25 Da) for two reasons: (1) accurate mass does not distinguish correct and incorrect matches unless incorrect masses are allowed to have inaccurate masses, and (2) Comet scores are converted to [PeptideProphet-like](https://pubs.acs.org/doi/abs/10.1021/ac025747h) discriminant scores. The second reason needs a reliable DeltaCN score, which requires a large number of theoretical peptides be scored in the search. That is guaranteed in a wider tolerance search.
 
 ![deltamass 2+](images/mass_2.png)
 
@@ -69,7 +71,7 @@ The PAW pipeline takes a divide and conquer approach to controlling PSM FDR. We 
 
 These are the scores for 2+ matches that had delta masses inside the 0-Da window. The unmodified peptides are in the top figure and the oxidized methionine peptides are in the lower figure. The target matches are in blue and the decoy matches are in red. The numerical tables below the histograms show the PSM FDR for the selected histogram at the location of the dotted line (the highlighted row). The dotted line in the right histogram corresponds to the 1% FDR cutoff. The majority of the correct target matches will be retained (to the right of the dotted line).
 
-> The thresholds for a 1% FDR are set automatically, but they can be changed interactively.
+> The thresholds for a 1% FDR are set automatically by the GUI, but they can be changed interactively.
 
 ---
 
@@ -109,41 +111,40 @@ The publication's TMT integrator processing yielded 5,635 quantifiable proteins;
 
 ### File roadmap
 
-- A_peptide_results_9.txt: Detailed PSM-level report for plex A
-- add_TMT_intensities_log.txt: Log file from adding reporter ion intensities to results files
-- analysis_stats.xlsx: Some PAW pipeline statsitics
-- B_peptide_results_9.txt: Detailed PSM-level report for plex B
-- C_peptide_results_9.txt: Detailed PSM-level report for plex C
-- comet.params: comet parameters file
-- file_list.txt: This file
-- GOTerms_report.txt: Frequency summary of GO terms
-- grouped_peptide_summary_9.txt: Peptide summary after extended parsimony grouping
-- grouped_peptide_summary_TMT_9.txt: Peptide summary after extended parsimony grouping with reporter ion intensities
-- grouped_protein_summary_9.txt: Protein summary after extended parsimony grouping
-- grouped_protein_summary_TMT_9.txt: Protein summary after extended parsimony grouping with reporter ion intensities
-- keyword_report.txt: Frequency summary of UniProt keyword terms
-- labeled_grouped_protein_summary_TMT_9.txt: Protein summary after extended parsimony grouping with sample keys and additional contaminant flagging
-- labeled_grouped_protein_summary_TMT_9_IRS_normalized.txt: Final IRS normalized protein table
-- pathway_report.txt: Frequency summary of Reactome Pathway terms
-- PAW_IRS_log.txt: Log file from the IRS normalization step
-- PAW_protein_grouper.log: Log file from the exgtended parsimony grouping step
-- PAW_results.log: Log file from the basic protein inference step
-- PAW_table_descriptions_9.txt: Summary of the files and tables from the PAW pipeline
-- peptide_summary_9.txt: Initial peptide summary
-- protein_summary_9.txt: Initial protein summary table (this table is redundant - each protein in each group gets a row)
-- PXD014414_comparisons_major.html: Notebook for comparisons of normal to triple negative to metaplastic samples in HTML format
-- PXD014414_comparisons_major.ipynb: Notebook for comparisons of normal to triple negative to metaplastic samples (iPython notebook with an R kernel)
-- PXD014414_comparisons_major.r: The R code cells from the notebook for comparisons of normal to triple negative to metaplastic samples
-- PXD014414_comparisons_subtypes.html: Notebook for comparisons of metaplastic subtypes in HTML format
-- PXD014414_comparisons_subtypes.ipynb: Notebook for comparisons of metaplastic subtypes (iPython notebook with an R kernel)
-- PXD014414_comparisons_subtypes.r: The R code cells from the notebook for comparisons of metaplastic subtypes
-- PXD014414_labeled_grouped_protein_summary_TMT_9_IRS_normalized.xlsx: Main IRS summary table in Excel with some formatting
-- PXD014414_MBC_three_subclasses_results.txt: Output from the notebook comparing metaplastic subtypes
-- PXD014414_MBC_three_subclasses_results.xlsx: Output from the notebook comparing metaplastic subtypes in Excel with formatting (DE candidates)
-- PXD014414_three_tissues_results.txt: Output from the notebook comparing major tissue types
-- PXD014414_three_tissues_results.xlsx: Output from the notebook comparing major tissue types in Excel with formatting (DE candidates)
+- `A_peptide_results_9.txt`: Detailed PSM-level report for plex A
+- `add_TMT_intensities_log.txt`: Log file from adding reporter ion intensities to results files
+- `analysis_stats.xlsx`: Some PAW pipeline statsitics
+- `B_peptide_results_9.tx`t: Detailed PSM-level report for plex B
+- `C_peptide_results_9.txt`: Detailed PSM-level report for plex C
+- `comet.params`: Comet parameters file
+- `file_list.txt`: This file
+- `GOTerms_report.txt`: Frequency summary of GO terms
+- `grouped_peptide_summary_9.txt`: Peptide summary after extended parsimony grouping
+- `grouped_peptide_summary_TMT_9.txt`: Peptide summary after extended parsimony grouping with reporter ion intensities
+- `grouped_protein_summary_9.txt`: Protein summary after extended parsimony grouping
+- `grouped_protein_summary_TMT_9.txt`: Protein summary after extended parsimony grouping with reporter ion intensities
+- `keyword_report.txt`: Frequency summary of UniProt keyword terms
+- `labeled_grouped_protein_summary_TMT_9.txt`: Protein summary after extended parsimony grouping with sample keys and additional contaminant flagging
+- `labeled_grouped_protein_summary_TMT_9_IRS_normalized.txt`: Final IRS normalized protein table
+- `pathway_report.txt`: Frequency summary of Reactome Pathway terms
+- `PAW_IRS_log.txt`: Log file from the IRS normalization step
+- `PAW_protein_grouper.log`: Log file from the exgtended parsimony grouping step
+- `PAW_results.log`: Log file from the basic protein inference step
+- `PAW_table_descriptions_9.txt`: Summary of the files and tables from the PAW pipeline
+- `peptide_summary_9.txt`: Initial peptide summary
+- `protein_summary_9.txt`: Initial protein summary table (this table is redundant - each protein in each group gets a row)
+- `PXD014414_comparisons_major.html`: Notebook for comparisons of normal to triple negative to metaplastic samples in HTML format
+- `PXD014414_comparisons_major.ipynb`: Notebook for comparisons of normal to triple negative to metaplastic samples (iPython notebook with an R kernel)
+- `PXD014414_comparisons_major.r`: The R code cells from the notebook for comparisons of normal to triple negative to metaplastic samples
+- `PXD014414_comparisons_subtypes.html`: Notebook for comparisons of metaplastic subtypes in HTML format
+- `PXD014414_comparisons_subtypes.ipynb`: Notebook for comparisons of metaplastic subtypes (iPython notebook with an R kernel)
+- `PXD014414_comparisons_subtypes.r`: The R code cells from the notebook for comparisons of metaplastic subtypes
+- `PXD014414_labeled_grouped_protein_summary_TMT_9_IRS_normalized.xlsx`: Main IRS summary table in Excel with some formatting
+- `PXD014414_MBC_three_subclasses_results.txt`: Output from the notebook comparing metaplastic subtypes
+- `PXD014414_MBC_three_subclasses_results.xlsx`: Output from the notebook comparing metaplastic subtypes in Excel with formatting (DE candidates)
+- `PXD014414_three_tissues_results.txt`: Output from the notebook comparing major tissue types
+- `PXD014414_three_tissues_results.xlsx`: Output from the notebook comparing major tissue types in Excel with formatting (DE candidates)
 
 ---
 
-Phil Wilmarth, OHSU
-April 27, 2020
+Phil Wilmarth, OHSU <br /> April 27, 2020
