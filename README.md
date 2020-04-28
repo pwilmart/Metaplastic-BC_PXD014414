@@ -92,7 +92,7 @@ Finally, here are the 4+ peptide scores for the 0-Da window. We have a lot fewer
 ![scores 1-Da 2+ nomods](images/score_1_2_nomod.png)
 ![scores 1-Da 2+ oxidation](images/score_1_2_ox.png)
 
-We have relatively few correct target matches for peptides in the 1-Da regions. We simplify things a little by combining deamidated peptides (note that we did not specify deamidation as a variable modification) and C13 mis-triggers into a single score histogram. We have a difference in the relative magnitudes of the target matches (in blue) and the decoy matches (in red) compared to the 0-Da regions. We will need to set slightly higher score cutoffs to maintain the 1% FDR. Only the 2+ peptides are shown for the 1-Da regions. The 3+ and 4+ peptides are similar.
+We have relatively fewer correct target matches for peptides in the 1-Da regions. We simplify things a little by combining deamidated peptides (note that we did not specify deamidation as a variable modification) and C13 mis-triggers into a single score histogram. We have a difference in the relative magnitudes of the target matches (in blue) and the decoy matches (in red) compared to the 0-Da regions. We will need to set slightly higher score cutoffs to maintain the 1% FDR. Only the 2+ peptides are shown for the 1-Da regions. The 3+ and 4+ peptides are similar.
 
 ---
 
