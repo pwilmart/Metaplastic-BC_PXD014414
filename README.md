@@ -32,6 +32,9 @@ Generating high quality **starting data** for biological exploration is the real
 
 The 27 samples had 6 normal tissue samples, 6 non-metaplastic triple negative breast cancer tissue samples, and 15 metaplastic breast cancer tissue samples. The metaplastic samples were classified into several subtypes. There were three major subtypes: chondroid, spindle, and squamous. One of the chondroid samples was actually a normal tissue sample and was reassigned. Two Jupyter notebooks were constructed to look at two questions: (1) how do the major tissue types (normal, triple negative, and metaplastic) differ? and (2) how do the metaplastic subtypes differ? The `PXD014414_comparisons_major.ipynb` or `PXD014414_comparisons_subtypes.ipynb` notebook files can be selected to display the notebooks at directly at GitHub. The notebooks are also saved as HTML files in case the repository is downloaded as a Zip file.
 
+- [PXD014414_comparisons_major](https://pwilmart.github.io/Metaplastic-BC_PXD014414/PXD014414_comparisons_major.html) - Comparison of the major cancer types
+- [PXD014414_comparisons_subtypes](https://pwilmart.github.io/Metaplastic-BC_PXD014414/PXD014414_comparisons_subtypes.html) - Comparison of the cancer subtypes
+
 ---
 
 ## PAW pipeline filtering overview
